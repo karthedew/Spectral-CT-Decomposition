@@ -33,7 +33,7 @@ class CosineMLP(nn.Module):
 class CosMLPTrainer:
     """Handles training and evaluation of a model."""
     def __init__(self, train_dataset, test_dataset, prototypes,
-                 batch_size: int = 4096, lr: float = 1e-3, device=None):
+                 batch_size: int = 64, lr: float = 1e-3, device=None):
         self.train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
         self.test_loader  = DataLoader(test_dataset,  batch_size=batch_size)
         self.device = device or ('cuda' if torch.cuda.is_available() else 'cpu')
