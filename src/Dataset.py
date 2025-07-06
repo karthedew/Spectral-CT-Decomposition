@@ -1,4 +1,5 @@
 # PyTorch Dataset and DataLoader
+import sys
 import os
 import gzip
 import numpy as np
@@ -11,7 +12,8 @@ def load_npy_gz(path):
     Load a .npy.gz file and return the numpy array.
     '''
     with gzip.open(path, 'rb') as file:
-        return np.load(file)
+        print(path)
+        return np.load(file) #, mmap_mode='r')
 
 
 class AttnVectorDataset(Dataset):
@@ -56,6 +58,13 @@ class MLPTestTrainDataset:
         fibro   = load_npy_gz(fibro_path)
         calc    = load_npy_gz(calc_path)
 
+        # Save the raw data for Obj Access
+        self.high_tx = high_tx
+        self.low_tx  = low_tx
+        self.adipose = adipose
+        self.fibro   = fibro
+        self.calc    = calc
+
         # Prepare per-pixel feature vectors
         # mu_low, mu_high from sinograms need reconstruction → skip for basic MLP
         # Here we demonstrate using mu arrays directly if pre-reconstructed.
@@ -70,12 +79,16 @@ class MLPTestTrainDataset:
         labels[fibro   > 0] = 1
         labels[calc    > 0] = 2
 
+        print(vectors.shape)
+#        sys.exit()
         # Flatten to (num_pixels,)
         X = vectors.reshape(-1, 2)
         y = labels.reshape(-1)
         mask_valid = y >= 0
         X = X[mask_valid]
         y = y[mask_valid]
+
+        #        sys.exit()
 
         # Split into train/test
         X_train, X_test, y_train, y_test = train_test_split(
