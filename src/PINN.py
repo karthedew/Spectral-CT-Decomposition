@@ -1,4 +1,5 @@
 import numpy as np
+import torch
 import torch.nn as nn
 from torch.utils.data import Dataset, DataLoader
 from sklearn.model_selection import train_test_split
@@ -33,7 +34,7 @@ class PinnWithPearsonMLP(nn.Module):
 class CosMLPTrainer:
     """Handles training and evaluation of a model."""
     def __init__(self, train_dataset, test_dataset, prototypes,
-                 batch_size: int = 64, lr: float = 1e-3, device=None):
+                 batch_size: int = 4096, lr: float = 1e-3, device=None):
         self.train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
         self.test_loader  = DataLoader(test_dataset,  batch_size=batch_size)
         self.device = device or ('cuda' if torch.cuda.is_available() else 'cpu')
@@ -44,7 +45,7 @@ class CosMLPTrainer:
     def train_epoch(self):
         self.model.train()
         total_loss = 0.0
-        for xb, yb in self.train_loader:
+        for xb, yb, *_ in self.train_loader:
             xb, yb = xb.to(self.device), yb.to(self.device)
             logits = self.model(xb)
             loss   = self.crit(logits, yb)
@@ -67,6 +68,6 @@ class CosMLPTrainer:
 
     def run(self, epochs: int = 10):
         for epoch in range(1, epochs + 1):
-            #train_loss = self.train_epoch()
-            #test_acc   = self.evaluate()
+            train_loss = self.train_epoch()
+            test_acc   = self.evaluate()
             print(f"Epoch {epoch}: Loss={train_loss:.4f}, Test Acc={test_acc:.2f}%")

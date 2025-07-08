@@ -4,7 +4,7 @@ import os
 import gzip
 import numpy as np
 import torch
-from torch.utils.data import Dataset, DataLoader
+from torch.utils.data import Dataset, DataLoader, TensorDataset
 from sklearn.model_selection import train_test_split
 
 def load_npy_gz(path):
@@ -61,6 +61,8 @@ class MLPTestTrainDataset:
         # Save the raw data for Obj Access
         self.high_tx = high_tx
         self.low_tx  = low_tx
+        self.mu_high = mu_high
+        self.mu_low  = mu_low
         self.adipose = adipose
         self.fibro   = fibro
         self.calc    = calc
@@ -75,12 +77,13 @@ class MLPTestTrainDataset:
         else:
             raise ValueError('Expected mu_low to be 3D array')
         labels = np.zeros_like(adipose, dtype=np.int64)
-        labels[adipose > 0] = 0
-        labels[fibro   > 0] = 1
-        labels[calc    > 0] = 2
+        labels[adipose > 0.5] = 0
+        labels[fibro   > 0.5] = 1
+        labels[calc    > 0.5] = 2
 
-        print(vectors.shape)
-#        sys.exit()
+        self.labels = labels
+        self.vectors = vectors
+
         # Flatten to (num_pixels,)
         X = vectors.reshape(-1, 2)
         y = labels.reshape(-1)
@@ -88,19 +91,42 @@ class MLPTestTrainDataset:
         X = X[mask_valid]
         y = y[mask_valid]
 
-        #        sys.exit()
+        N = X.shape[0]
+        train_n = int(0.8 * N)
+        mask = np.zeros(N, dtype=bool)
+        mask[:train_n] = True
+        np.random.seed(42)
+        np.random.shuffle(mask)
 
-        # Split into train/test
-        X_train, X_test, y_train, y_test = train_test_split(
-            X, y,
-            test_size=test_size,
-            stratify=y,
-            random_state=random_state
+        self.X_train = X[mask]
+        self.y_train = y[mask]
+        self.X_test  = X[~mask]
+        self.y_test  = y[~mask]
+
+        prototypes = []
+        for cls in sorted(np.unique(self.y_train)):
+            mask = (self.y_train == cls)
+            mu_low_mean  = self.X_train[mask, 0].mean()
+            mu_high_mean = self.X_train[mask, 0].mean()
+            prototypes.append([mu_low_mean, mu_high_mean])
+        self.prototypes = prototypes # torch.tensor(prototypes) #.float().cuda()  # shape (C, 2)
+        
+        print('============================')
+        print('|          SHAPES           ')
+        print('============================')
+        print('X_train shape:    ', self.X_train.shape)
+        print('y_train shape:    ', self.y_train.shape)
+        print('Prototypes shape: ', np.array(prototypes).shape)
+        print('----------------------------')
+
+        self.train_ds = TensorDataset(
+            torch.from_numpy(self.X_train),
+            torch.from_numpy(self.y_train)
         )
-
-        # Create PyTorch datasets
-        self.train_dataset = AttnDataset(X_train, y_train)
-        self.test_dataset  = AttnDataset(X_test,  y_test)
+        self.test_ds  = TensorDataset(
+            torch.from_numpy(self.X_test),
+            torch.from_numpy(self.y_test)
+        )
 
 
 # Example usage:

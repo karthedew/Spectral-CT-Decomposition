@@ -1,10 +1,16 @@
 \section{Introduction}\label{sec:introduction}
 
-Bitcoin has garnered popular and traditional finance support through recent years. Since its initial proposal in 2008,
-it has proven to be a volatile asset that cycles peaks and lows over a four year cycle. It should be noted that,
-in order to build a likely significantly more accurate model, several various methods should be analyzed which includes
-additional machine learning models beyond the regressive or classification models taught within this course.
-Additionally, quality and complete cycle data should be used to fully train models if the intent is to use them in
-actual trading. As such, it should be noted that this is a simple project intended to learn supervised learning methods
-and should not be taken as financial advice. It is likely that the model developed in this report will be far from
-worthy for making any sort of Bitcoin investment decisions.
+Spectral Computed Tomography (CT) extends traditional CT by making use of the energy-dependence of
+X-ray attenuation. The conventional CT process produces a single "grayscale" attenuation map which can result in indistinguishable results when comparing similar bulk density materials. Spectral CT records
+two separate x-ray photon energy spectra which allows for recording different attenuation properties
+at different energies. Typically x-ray photons interact with materials through the photoelectric effect,
+which typically occur at low photon energies, and Compton scattering, which typically occur at higher
+photon energies. The dataset provided by the American Association of Physicists in Medicine (AAPM)
+contains the "low-kVp" and "high-kVP" dual energy CT measurements collected at two different tube
+voltages. The low-kVp transmission with the x-ray tube operating at 50 kVp and the high-kVp transmission operating at 80 kVp.
+
+Extracting reliable photoelectric and Compton maps from noisy or limited‐view data is challenging. Classic algebraic or statistical decomposition methods require careful regularization and often struggle with low photon counts or beam‐hardening artifacts. Deep learning approaches, by contrast, can learn complex nonlinear mappings but may overfit to the training distribution and produce physically inconsistent outputs (e.g., negative attenuation, or tissue maps that fail to reproduce the measured projection data).
+
+This work proposes a physics‐informed neural network (PINN) framework for multi‐energy CT tissue classification by first converting paired low- and high-kVp sinograms into per‐pixel attenuation coefficients via the Beer–Lambert law, then applying a closed-form basis decomposition to recover photoelectric and Compton component images. The core model is a lightweight multilayer perceptron that directly classifies each pixel into adipose, fibroglandular, or calcification classes. The training loss is augmented with the standard cross‐entropy loss with a physics consistency term that enforces agreement between the network’s class‐probability–weighted reconstruction and the measured attenuation data. This hybrid loss encourages the network to respect fundamental attenuation physics while retaining the flexibility of data-driven learning.
+
+This approach is applied on the publicly available AAPM DL-Spectral CT Challenge dataset, performing comprehensive EDA, sinogram-domain preprocessing, and network training entirely in PyTorch, with future future work that could integrate ASTRA‐based differentiable forward projections. Results show improved material separation and robustness compared to purely data-driven classifiers, highlighting the potential of PINNs for reliable, quantitative spectral CT tissue mapping.

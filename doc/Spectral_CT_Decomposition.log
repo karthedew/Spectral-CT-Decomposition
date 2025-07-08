@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2025.2.24)  30 JUN 2025 21:30
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2025.2.24)  7 JUL 2025 12:01
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -956,312 +956,58 @@ LaTeX Font Info:    Font shape `T1/LinuxLibertineT-TLF/b/n' will be
 LaTeX Font Info:    Font shape `T1/LinuxLibertineT-TLF/b/n' will be
 (Font)              scaled to size 10.95pt on input line 31.
 
-(./introduction/introduction.tex) (./related_work/related_work.tex
-Overfull \hbox (3.05074pt too wide) in paragraph at lines 3--1
-\T1/LinuxLibertineT-TLF/m/n/9 (-20) Bitcoin has gar-nered pop-u-lar and tra-di-
-tional fi-nance sup-port through
- []
-
-
-Package natbib Warning: Citation `Chen2023' on page 1 undefined on input line 4
-.
-
-
-Package natbib Warning: Citation `Chen2020' on page 1 undefined on input line 7
-.
-
-) (./methodology/methodology.tex
+(./introduction/introduction.tex) (./related_work/related_work.tex)
+(./methodology/methodology.tex
 LaTeX Font Info:    Font shape `T1/LinuxLibertineT-TLF/m/it' will be
 (Font)              scaled to size 9.0pt on input line 15.
 LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/m/n' will be
 (Font)              scaled to size 9.0pt on input line 18.
- [1.1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}{/usr/share/texlive/tex
-mf-dist/fonts/enc/dvips/libertine/lbtn_25tcsq.enc}{/usr/share/texlive/texmf-dis
-t/fonts/enc/dvips/libertine/lbtn_76gpa5.enc}
-
-{/usr/share/texlive/texmf-dist/fonts/enc/dvips/libertine/lbtn_nh77jq.enc}{/usr/
-share/texlive/texmf-dist/fonts/enc/dvips/libertine/lbtn_7grukw.enc}{/usr/share/
-texlive/texmf-dist/fonts/enc/dvips/libertine/lbtn_oexx6f.enc}]
-LaTeX Font Info:    Font shape `T1/LinuxBiolinumT-TLF/m/n' will be
-(Font)              scaled to size 9.0pt on input line 54.
-LaTeX Font Info:    Font shape `T1/LinuxBiolinumT-TLF/m/it' will be
-(Font)              scaled to size 9.0pt on input line 54.
-
-
-Package natbib Warning: Citation `adaBoostAnalyticsVidhya' on page 2 undefined 
-on input line 59.
-
-
-Package natbib Warning: Citation `James2023' on page 2 undefined on input line 
-74.
-
-
-Package natbib Warning: Citation `James2023' on page 2 undefined on input line 
-87.
-
-
-Package natbib Warning: Citation `votingRegressorMedium' on page 2 undefined on
- input line 99.
-
-) (./evaluation/evaluation.tex
-
-Package natbib Warning: Citation `bitcoinData' on page 2 undefined on input lin
-e 21.
-
-LaTeX Font Info:    Font shape `T1/LinuxBiolinumT-TLF/m/n' will be
-(Font)              scaled to size 7.0pt on input line 32.
-[2.2]
-
-Package natbib Warning: Citation `m2slData' on page 3 undefined on input line 4
-8.
-
-
-Package natbib Warning: Citation `dxyData' on page 3 undefined on input line 70
-.
-
-LaTeX Font Info:    Trying to load font information for T1+zi4 on input line 89
-.
-(/usr/share/texlive/texmf-dist/tex/latex/inconsolata/t1zi4.fd
-File: t1zi4.fd 2018/01/14 T1/zi4 (Inconsolata)
-)
-LaTeX Font Info:    Font shape `T1/zi4/m/n' will be
-(Font)              scaled to size 9.0pt on input line 89.
-Package microtype Info: Loading generic protrusion settings for font family
-(microtype)             `zi4' (encoding: T1).
-(microtype)             For optimal results, create family-specific settings.
-(microtype)             See the microtype manual for details.
-
-Overfull \hbox (23.63731pt too wide) in paragraph at lines 140--152
- [][] 
- []
-
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [3.3{/usr/share/texlive/texmf-dist/fonts/enc/dvips/inconsolata/i4-t1-4.enc}]
-Overfull \hbox (8.39124pt too wide) in paragraph at lines 194--206
- [][] 
- []
-
-<plots/bitcoin_price_plot.png, id=110, 867.24pt x 433.62pt>
-File: plots/bitcoin_price_plot.png Graphic file (type png)
-<use plots/bitcoin_price_plot.png>
-Package pdftex.def Info: plots/bitcoin_price_plot.png  used on input line 212.
-(pdftex.def)             Requested size: 253.14749pt x 126.57364pt.
-
-Overfull \hbox (12.0pt too wide) in paragraph at lines 212--213
- [][] 
- []
-
-
-Class acmart Warning: A possible image without description on input line 215.
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-
-LaTeX Warning: Reference `fig:example_plot' on page 4 undefined on input line 2
-17.
-
-<plots/trailing_average_plot.png, id=112, 867.24pt x 433.62pt>
-File: plots/trailing_average_plot.png Graphic file (type png)
-<use plots/trailing_average_plot.png>
-Package pdftex.def Info: plots/trailing_average_plot.png  used on input line 22
-5.
-(pdftex.def)             Requested size: 253.14749pt x 126.57364pt.
-
-Overfull \hbox (12.0pt too wide) in paragraph at lines 225--226
- [][] 
- []
-
-
-Class acmart Warning: A possible image without description on input line 228.
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-<plots/m2sl_plot.png, id=114, 867.24pt x 433.62pt>
-File: plots/m2sl_plot.png Graphic file (type png)
-<use plots/m2sl_plot.png>
-Package pdftex.def Info: plots/m2sl_plot.png  used on input line 238.
-(pdftex.def)             Requested size: 253.14749pt x 126.57364pt.
-
-Overfull \hbox (12.0pt too wide) in paragraph at lines 238--239
- [][] 
- []
-
-
-Class acmart Warning: A possible image without description on input line 241.
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-<plots/fear_and_greed_plot.png, id=116, 867.24pt x 433.62pt>
-File: plots/fear_and_greed_plot.png Graphic file (type png)
-<use plots/fear_and_greed_plot.png>
-Package pdftex.def Info: plots/fear_and_greed_plot.png  used on input line 251.
-
-(pdftex.def)             Requested size: 253.14749pt x 126.57364pt.
-
-Overfull \hbox (12.0pt too wide) in paragraph at lines 251--252
- [][] 
- []
-
-
-Class acmart Warning: A possible image without description on input line 254.
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-<plots/correlation_matrix_plot.png, id=118, 1445.4pt x 1156.32pt>
-File: plots/correlation_matrix_plot.png Graphic file (type png)
-<use plots/correlation_matrix_plot.png>
-Package pdftex.def Info: plots/correlation_matrix_plot.png  used on input line 
-264.
-(pdftex.def)             Requested size: 253.14749pt x 202.51782pt.
-
-Overfull \hbox (12.0pt too wide) in paragraph at lines 264--265
- [][] 
- []
-
-
-Class acmart Warning: A possible image without description on input line 267.
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-[4.4 <./plots/bitcoin_price_plot.png> <./plots/trailing_average_plot.png>]
-Overfull \hbox (16.37088pt too wide) in paragraph at lines 316--319
-\T1/LinuxLibertineT-TLF/m/n/9 (-20) (\T1/zi4/m/n/9 y_df\T1/LinuxLibertineT-TLF/
-m/n/9 (-20) ) is also scaled us-ing a sep-a-rate in-stance of \T1/zi4/m/n/9 Sta
-ndardScaler
- []
-
-[5.5 <./plots/m2sl_plot.png> <./plots/fear_and_greed_plot.png> <./plots/correla
-tion_matrix_plot.png>]
-Overfull \hbox (1.87532pt too wide) in paragraph at lines 336--338
-\T1/LinuxLibertineT-TLF/m/n/9 (-20) ram-e-ter grid. The mod-els are eval-u-ated
- us-ing K-Fold cross-validation
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 336--338
-
- []
-
-
-Overfull \hbox (4.3816pt too wide) in paragraph at lines 349--350
-[]\T1/LinuxLibertineT-TLF/b/n/9 (-20) Parallel Pro-cess-ing: \T1/LinuxLibertine
-T-TLF/m/n/9 (-20) The n_jobs pa-ram-e-ter is set to self.nproc
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 354--356
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 375--377
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 396--398
-
- []
-
-LaTeX Font Info:    Trying to load font information for TS1+LinuxLibertineT-TLF
- on input line 431.
-(/usr/share/texlive/texmf-dist/tex/latex/libertine/TS1LinuxLibertineT-TLF.fd
-File: TS1LinuxLibertineT-TLF.fd 2017/03/20 (autoinst) Font definitions for TS1/
-LinuxLibertineT-TLF.
-)
-LaTeX Font Info:    Font shape `TS1/LinuxLibertineT-TLF/b/n' will be
-(Font)              scaled to size 9.0pt on input line 431.
-Package microtype Info: Loading generic protrusion settings for font family
-(microtype)             `LinuxLibertineT-TLF' (encoding: TS1).
-(microtype)             For optimal results, create family-specific settings.
-(microtype)             See the microtype manual for details.
-LaTeX Font Info:    Font shape `TS1/LinuxLibertineT-TLF/m/n' will be
-(Font)              scaled to size 9.0pt on input line 436.
-<plots/prediction_vs_actual.png, id=146, 867.24pt x 433.62pt>
-File: plots/prediction_vs_actual.png Graphic file (type png)
-<use plots/prediction_vs_actual.png>
-Package pdftex.def Info: plots/prediction_vs_actual.png  used on input line 447
-.
-(pdftex.def)             Requested size: 253.14749pt x 126.57364pt.
-
-Overfull \hbox (12.0pt too wide) in paragraph at lines 447--448
- [][] 
- []
-
-
-Class acmart Warning: A possible image without description on input line 450.
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-) (./discussion/discussion.tex) (./conclusion/conclusion.tex [6.6{/usr/share/te
-xlive/texmf-dist/fonts/enc/dvips/libertine/lbtn_7f4ce4.enc}{/usr/share/texlive/
-texmf-dist/fonts/enc/dvips/libertine/lbtn_naooyc.enc}])
+) (./evaluation/evaluation.tex)
+(./discussion/discussion.tex) (./conclusion/conclusion.tex)
 No file Spectral_CT_Decomposition.bbl.
 
-Package natbib Warning: There were undefined citations.
-
-
-Class acmart Warning: Some images may lack descriptions.
-
-
-Class acmart Warning: ACM keywords are mandatory for papers over two pages.
-
-
-Class acmart Warning: ACM reference format is mandatory 
-(acmart)              for papers over one page. 
-(acmart)              Please add printacmref=true to the 
-(acmart)              \settopmatter command..
-
-
-Class acmart Warning: CCS concepts are mandatory for papers over two pages.
+Package balance Warning: You have called \balance in second column
+(balance)                Columns might not be balanced.
 
 (/usr/share/texlive/texmf-dist/tex/generic/stringenc/se-pdfdoc.def
 File: se-pdfdoc.def 2019/11/29 v1.12 stringenc: PDFDocEncoding
 )
 (/usr/share/texlive/texmf-dist/tex/generic/stringenc/se-utf8.def
 File: se-utf8.def 2019/11/29 v1.12 stringenc: UTF-8
-) [7.7 <./plots/prediction_vs_actual.png>] (./Spectral_CT_Decomposition.aux)
+) [1.1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}{/usr/share/texlive/te
+xmf-dist/fonts/enc/dvips/libertine/lbtn_25tcsq.enc}{/usr/share/texlive/texmf-di
+st/fonts/enc/dvips/libertine/lbtn_76gpa5.enc}
+
+{/usr/share/texlive/texmf-dist/fonts/enc/dvips/libertine/lbtn_nh77jq.enc}{/usr/
+share/texlive/texmf-dist/fonts/enc/dvips/libertine/lbtn_7grukw.enc}{/usr/share/
+texlive/texmf-dist/fonts/enc/dvips/libertine/lbtn_oexx6f.enc}] (./Spectral_CT_D
+ecomposition.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-22>
  ***********
-
-
-LaTeX Warning: There were undefined references.
-
 Package rerunfilecheck Info: File `Spectral_CT_Decomposition.out' has not chang
 ed.
-(rerunfilecheck)             Checksum: A9C8C15827DE33B28BE161F591AE3D17;2412.
+(rerunfilecheck)             Checksum: 552393E240B4B64E60BEF4D204216534;1228.
  ) 
 Here is how much of TeX's memory you used:
- 21043 strings out of 474222
- 338852 string characters out of 5748733
- 1959975 words of memory out of 5000000
- 42381 multiletter control sequences out of 15000+600000
- 675533 words of font info for 293 fonts, out of 8000000 for 9000
+ 20676 strings out of 474222
+ 329819 string characters out of 5748733
+ 1950975 words of memory out of 5000000
+ 42226 multiletter control sequences out of 15000+600000
+ 644394 words of font info for 187 fonts, out of 8000000 for 9000
  1302 hyphenation exceptions out of 8191
- 90i,12n,131p,1022b,663s stack positions out of 10000i,1000n,20000p,200000b,200000s
-</usr/share/texlive/texmf-dist/fonts/type1/public/inconsolata/Inconsolata-zi4
-r.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/newtx/LibertineMathMI.p
-fb></usr/share/texlive/texmf-dist/fonts/type1/public/libertine/LinBiolinumT.pfb
-></usr/share/texlive/texmf-dist/fonts/type1/public/libertine/LinBiolinumTB.pfb>
-</usr/share/texlive/texmf-dist/fonts/type1/public/libertine/LinBiolinumTI.pfb><
-/usr/share/texlive/texmf-dist/fonts/type1/public/libertine/LinLibertineT.pfb></
-usr/share/texlive/texmf-dist/fonts/type1/public/libertine/LinLibertineTB.pfb></
-usr/share/texlive/texmf-dist/fonts/type1/public/libertine/LinLibertineTI.pfb></
-usr/share/texlive/texmf-dist/fonts/type1/public/newtx/txsys.pfb>
-Output written on Spectral_CT_Decomposition.pdf (7 pages, 2639220 bytes).
+ 90i,11n,131p,1022b,606s stack positions out of 10000i,1000n,20000p,200000b,200000s
+</usr/share/texlive/texmf-dist/fonts/type1/public/newtx/LibertineMathMI.pfb><
+/usr/share/texlive/texmf-dist/fonts/type1/public/libertine/LinBiolinumTB.pfb></
+usr/share/texlive/texmf-dist/fonts/type1/public/libertine/LinLibertineT.pfb></u
+sr/share/texlive/texmf-dist/fonts/type1/public/libertine/LinLibertineTB.pfb></u
+sr/share/texlive/texmf-dist/fonts/type1/public/libertine/LinLibertineTI.pfb></u
+sr/share/texlive/texmf-dist/fonts/type1/public/newtx/txsys.pfb>
+Output written on Spectral_CT_Decomposition.pdf (1 page, 314010 bytes).
 PDF statistics:
- 232 PDF objects out of 1000 (max. 8388607)
- 185 compressed objects within 2 object streams
- 53 named destinations out of 1000 (max. 500000)
- 62127 words of extra memory for PDF output out of 74296 (max. 10000000)
+ 100 PDF objects out of 1000 (max. 8388607)
+ 79 compressed objects within 1 object stream
+ 13 named destinations out of 1000 (max. 500000)
+ 43105 words of extra memory for PDF output out of 51595 (max. 10000000)
 
