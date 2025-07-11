@@ -4,8 +4,9 @@ import os
 import gzip
 import numpy as np
 import torch
-from torch.utils.data import Dataset, DataLoader, TensorDataset
+from torch.utils.data import Dataset, DataLoader, TensorDataset, Subset
 from sklearn.model_selection import train_test_split
+
 
 def load_npy_gz(path):
     '''
@@ -14,16 +15,6 @@ def load_npy_gz(path):
     with gzip.open(path, 'rb') as file:
         print(path)
         return np.load(file) #, mmap_mode='r')
-
-
-class AttnVectorDataset(Dataset):
-    def __init__(self, X, y):
-        self.X = torch.from_numpy(X).float()
-        self.y = torch.from_numpy(y).long()
-    def __len__(self):
-        return self.y.size(0)
-    def __getitem__(self, idx):
-        return self.X[idx], self.y[idx]
 
 
 class MLPTestTrainDataset:
@@ -98,10 +89,18 @@ class MLPTestTrainDataset:
         np.random.seed(42)
         np.random.shuffle(mask)
 
-        self.X_train = X[mask]
+        X_train      = X[mask]
         self.y_train = y[mask]
-        self.X_test  = X[~mask]
+        X_test       = X[~mask]
         self.y_test  = y[~mask]
+
+        # --- 4. Data scaling (standardization) ---
+        # Compute mean and std on training features
+        global_mean = X_train.mean(axis=0)
+        global_std  = X_train.std(axis=0) + 1e-6  # avoid zero division
+        # Apply scaling
+        self.X_train = (X_train - global_mean) / global_std
+        self.X_test  = (X_test  - global_mean) / global_std
 
         prototypes = []
         for cls in sorted(np.unique(self.y_train)):
@@ -110,14 +109,16 @@ class MLPTestTrainDataset:
             mu_high_mean = self.X_train[mask, 0].mean()
             prototypes.append([mu_low_mean, mu_high_mean])
         self.prototypes = prototypes # torch.tensor(prototypes) #.float().cuda()  # shape (C, 2)
-        
+
+        '''
         print('============================')
-        print('|          SHAPES           ')
+        print('|          SHAPES          |')
         print('============================')
         print('X_train shape:    ', self.X_train.shape)
         print('y_train shape:    ', self.y_train.shape)
         print('Prototypes shape: ', np.array(prototypes).shape)
         print('----------------------------')
+        '''
 
         self.train_ds = TensorDataset(
             torch.from_numpy(self.X_train),
@@ -127,6 +128,15 @@ class MLPTestTrainDataset:
             torch.from_numpy(self.X_test),
             torch.from_numpy(self.y_test)
         )
+
+    def subsample(self, subsample_size: float = 0.1):
+        full_size_train = len(self.train_ds)
+        subset_size = int(full_size_train * subsample_size)
+
+        indices = torch.randperm(full_size_train)[:subset_size]
+        train_subset = Subset(self.train_ds, indices)
+
+        return DataLoader(train_subset, batch_size=65539, shuffle=True)
 
 
 # Example usage:

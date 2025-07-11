@@ -1,10 +1,10 @@
 import numpy as np
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 from torch.utils.data import Dataset, DataLoader
-from sklearn.model_selection import train_test_split
 
-class PinnWithPearsonMLP(nn.Module):
+class MLP(nn.Module):
     """MLP that augments input with cosine similarities to class prototypes."""
     def __init__(self, prototypes: np.ndarray, hidden_dim: int = 64):
         super().__init__()
@@ -16,7 +16,8 @@ class PinnWithPearsonMLP(nn.Module):
             nn.ReLU(),
             nn.Linear(hidden_dim, hidden_dim),
             nn.ReLU(),
-            nn.Linear(hidden_dim, self.prototypes.shape[0])
+            nn.Linear(hidden_dim, self.prototypes.shape[0]),
+            nn.Sigmoid()
         )
 
     def forward(self, x):
@@ -26,33 +27,63 @@ class PinnWithPearsonMLP(nn.Module):
         p = self.prototypes.to(x.device)  # (C,2)
         x_exp = x.unsqueeze(1).expand(-1, C, -1).reshape(-1, 2)
         p_exp = p.unsqueeze(0).expand(B, -1, -1).reshape(-1, 2)
-        sims  = self.cosine(x_exp, p_exp).reshape(B, C)
-        x_aug = torch.cat([x, sims], dim=1)
+#        sims  = self.cosine(x_exp, p_exp).reshape(B, C)
+        pearson = torch.corrcoef(x_exp).reshape(B, C)
+#        x_aug = torch.cat([x, sims], dim=1)
+        x_aug = torch.cat([x, pearson], dim=1)
         return self.net(x_aug)
 
 
 class CosMLPTrainer:
     """Handles training and evaluation of a model."""
-    def __init__(self, train_dataset, test_dataset, prototypes,
-                 batch_size: int = 4096, lr: float = 1e-3, device=None):
+    def __init__(
+        self,
+        train_dataset,
+        test_dataset,
+        prototypes,
+        batch_size: int = 65539,
+        alpha: float = 1e-2,
+        device=None
+    ):
         self.train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
         self.test_loader  = DataLoader(test_dataset,  batch_size=batch_size)
         self.device = device or ('cuda' if torch.cuda.is_available() else 'cpu')
-        self.model  = PinnWithPearsonMLP(prototypes).to(self.device)
-        self.opt    = torch.optim.Adam(self.model.parameters(), lr=lr)
+        self.model  = MLP(prototypes).to(self.device)
+        self.opt    = torch.optim.Adam(self.model.parameters(), lr=alpha)
+        self.alpha  = alpha
         self.crit   = nn.CrossEntropyLoss()
+
+    def calculate_loss(self, logits, x_batch, prototypes):
+        probs = F.softmax(logits, dim=1)
+        mu_pred = probs @ prototypes
+        return F.mse_loss(mu_pred, x_batch)
+
+    def pearson_loss(self, x):
+        return torch.corrcoef(x)
 
     def train_epoch(self):
         self.model.train()
         total_loss = 0.0
+
         for xb, yb, *_ in self.train_loader:
             xb, yb = xb.to(self.device), yb.to(self.device)
             logits = self.model(xb)
-            loss   = self.crit(logits, yb)
+
+            ce_loss = self.crit(logits, yb)
+
+            # Pysics-informed loss
+            probs     = F.softmax(logits, dim=1)
+            p         = self.model.prototypes.to(self.device).float()
+            mu_pred   = probs @ p
+            phys_loss = F.mse_loss(mu_pred, xb)
+
+            loss = ce_loss + self.alpha * phys_loss
+
             self.opt.zero_grad()
             loss.backward()
             self.opt.step()
             total_loss += loss.item()
+
         return total_loss / len(self.train_loader)
 
     def evaluate(self):

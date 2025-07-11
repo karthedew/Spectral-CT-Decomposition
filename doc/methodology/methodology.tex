@@ -13,17 +13,41 @@ and detector imperfections, and purely data‐driven deep‐learning approaches 
 generalize beyond their training domain.
 
 This project proposes to address these limitations by developing a \emph{physics‐informed neural network} 
-(PINN) that directly incorporates the known Beer–Lambert attenuation law and the two dominant 
-interaction mechanisms—photoelectric absorption and Compton scattering—into its architecture 
+(PINN) that directly incorporates the known Beer–Lambert attenuation law, $I = I_0 e^{-\mu x}$, and the
+two dominant interaction mechanisms—photoelectric absorption and Compton scattering—into its architecture 
 and training loss. By decomposing each pixel’s dual‐energy attenuation pair \([\mu_{\rm low},\,
 \mu_{\rm high}]\) into physically meaningful photoelectric and Compton components and enforcing 
-consistency with both the measured attenuation maps and sinogram data, our approach aims to (1)
-improve classification accuracy of key tissue types (adipose, fibroglandular, bone) and (2) 
+consistency with both the measured attenuation maps and sinogram data, this approach aims to (1)
+improve classification accuracy of key tissue types (adipose, fibroglandular, calcification) and (2) 
 enhance robustness to noise and out‐of‐distribution scenarios. This integration of first‐principles 
-physics with modern deep learning promises more reliable, interpretable, and generalizable 
+physics with modern deep learning may achieve more reliable, interpretable, and generalizable 
 spectral CT tissue characterization.
 
 \subsection{Data Preparation}\label{sec:data_preparation}
+
+The dataset from AAPM \cite{AAPM2024SpectralCT} contains data in compressed numpy array format. Both
+`lowkVpTransmission` and `highkVpTransmission` datasets contain the two energy beams, 50 kVp and 80
+kVp, respectively. The transmission data contains the normalized spectrum of the number of photons
+detected after passing through tissue. Ground trut tissue maps are also provided for the simulated
+Adipose, Fibrogandular, and Calcification tissues.
+
+To prepare the dataset, an \emph{MLPTestTraindataset} class is used to:
+
+\begin{itemize}
+    \item load the raw data,
+    \item compute the attenuation coefficients,
+    \item vectorize the attenuation coefficients,
+    \item create labels from adipose, fibroglandular, and calcification ground truth data,
+    \item flatten to (num\_pixels,)
+    \item apply scaling to the attenuation coefficients
+    \item compute the prototypes
+    \item split the data into train (80\%) and test (80\%) sets.
+\end{itemize}
+
+The intent of this project is to calculate the attenuation using the from the transmission data and stack the results
+into 2-component feature vectors $[\mu_{\text{low}}, \mu_{\text{high}}]$.
+translate the data into a vectorized low and high energy spectrum sets
+
 
 \subsection{Methodology}\label{subsec:price_prediction_methodology}
 
