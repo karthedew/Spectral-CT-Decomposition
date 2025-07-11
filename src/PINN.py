@@ -27,11 +27,21 @@ class MLP(nn.Module):
         p = self.prototypes.to(x.device)  # (C,2)
         x_exp = x.unsqueeze(1).expand(-1, C, -1).reshape(-1, 2)
         p_exp = p.unsqueeze(0).expand(B, -1, -1).reshape(-1, 2)
-#        sims  = self.cosine(x_exp, p_exp).reshape(B, C)
-        pearson = torch.corrcoef(x_exp).reshape(B, C)
-#        x_aug = torch.cat([x, sims], dim=1)
-        x_aug = torch.cat([x, pearson], dim=1)
+        sims  = self.cosine(x_exp, p_exp).reshape(B, C)
+#        pearson = torch.corrcoef(x_exp).reshape(B, C)
+        x_aug = torch.cat([x, sims], dim=1)
+#        x_aug = torch.cat([x, pearson], dim=1)
         return self.net(x_aug)
+
+    def pearson_corr(self, x, y):
+        x_mean = x.mean(dim=1, keepdim=True)
+        y_mean = y.mean(dim=1, keepdim=True)
+        x_centered = x - x_mean
+        y_centered = y - y_mean
+        cov = (x_centered * y_centered).mean(dim=1)
+        std_x = x.std(dim=1)
+        std_y = y.std(dim=1)
+        return cov / (std_x * std_y + 1e-8)
 
 
 class CosMLPTrainer:

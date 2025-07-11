@@ -129,14 +129,12 @@ class MLPTestTrainDataset:
             torch.from_numpy(self.y_test)
         )
 
-    def subsample(self, subsample_size: float = 0.1):
+    def subsample(self, subsample_size: float = 0.01):
         full_size_train = len(self.train_ds)
         subset_size = int(full_size_train * subsample_size)
 
         indices = torch.randperm(full_size_train)[:subset_size]
-        train_subset = Subset(self.train_ds, indices)
-
-        return DataLoader(train_subset, batch_size=65539, shuffle=True)
+        return Subset(self.train_ds, indices)
 
 
 # Example usage:
