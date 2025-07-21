@@ -5,7 +5,10 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
-  #    "astra-toolbox>=2.3.1.post0",
+    "matplotlib>=3.10.3",
+    "numba>=0.61.2",
+    #    "astra-toolbox>=2.3.1.post0",
+    "optuna>=4.4.0",
     "scikit-learn>=1.7.0",
     "torch>=2.0.1",
     "torchvision>=0.15.2",

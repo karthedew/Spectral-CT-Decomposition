@@ -4,7 +4,7 @@ import os
 import gzip
 import numpy as np
 import torch
-from torch.utils.data import Dataset, DataLoader, TensorDataset, Subset
+from torch.utils.data import Dataset, DataLoader, TensorDataset, Subset, random_split
 from sklearn.model_selection import train_test_split
 
 
@@ -13,8 +13,35 @@ def load_npy_gz(path):
     Load a .npy.gz file and return the numpy array.
     '''
     with gzip.open(path, 'rb') as file:
-        print(path)
         return np.load(file) #, mmap_mode='r')
+
+class TissueSegmentationDataset(Dataset):
+    def __init__(self, attn_vector, labels):
+        self.x = attn_vector            # (1000, 2, 512, 512)
+        self.y = labels                 # (1000, 3, 512, 512)
+
+        self.x = torch.tensor(self.x, dtype=torch.float32)
+        self.y = torch.tensor(self.y, dtype=torch.float32)
+
+    def __len__(self):
+        return len(self.y)
+
+    def __getitem__(self, idx):
+        return self.x[idx], self.y[idx]
+
+class MuDataset(Dataset):
+    def __init__(self, attn_vector, labels):
+        self.x = attn_vector           # shape: (1000, 2, 256, 1024)
+        self.y = labels                # shape: (1000, 3)
+
+        self.x = torch.tensor(self.x, dtype=torch.float32)
+        self.y = torch.tensor(self.y, dtype=torch.float32)
+
+    def __len__(self):
+        return len(self.y)
+
+    def __getitem__(self, idx):
+        return self.x[idx], self.y[idx]
 
 
 class MLPTestTrainDataset:
@@ -25,16 +52,17 @@ class MLPTestTrainDataset:
         train_dataset (Dataset): training set
         test_dataset  (Dataset): testing set
     '''
-    def __init__(self, data_dir: str, test_size: float = 0.2, random_state: int = 42):
+    def __init__(self, data_dir: str, test_size: float = 0.2, random_state: int = 42, normalize: bool = False):
 
         # Identify file paths
         files = os.listdir(data_dir)
         high_tx_path = os.path.join(data_dir, 'highkVpTransmission.npy.gz')
         low_tx_path  = os.path.join(data_dir, 'lowkVpTransmission.npy.gz')
-        adipose_path = next(os.path.join(data_dir, f) for f in files if 'Adipose' in f)
-        fibro_path   = next(os.path.join(data_dir, f) for f in files if 'Fibroglandular' in f)
-        calc_path    = next(os.path.join(data_dir, f) for f in files if 'Calcif' in f)
+        adipose_path = os.path.join(data_dir, 'Phantom_Adipose.npy.gz')
+        fibro_path   = os.path.join(data_dir, 'Phantom_Fibroglandular.npy.gz')
+        calc_path    = os.path.join(data_dir, 'Phantom_Calcification.npy.gz')
 
+        print('Reading Data Files...')
         # Load transmission sinograms
         high_tx = load_npy_gz(high_tx_path)  # (N, angles, pixels)
         low_tx  = load_npy_gz(low_tx_path)
@@ -54,47 +82,61 @@ class MLPTestTrainDataset:
         self.low_tx  = low_tx
         self.mu_high = mu_high
         self.mu_low  = mu_low
+        self.attn    = np.stack([mu_low, mu_high], axis=1)
         self.adipose = adipose
         self.fibro   = fibro
         self.calc    = calc
 
-        # Prepare per-pixel feature vectors
-        # mu_low, mu_high from sinograms need reconstruction → skip for basic MLP
-        # Here we demonstrate using mu arrays directly if pre-reconstructed.
-        # For basic case, assume mu_low, mu_high already shape (N, H, W)
-        if mu_low.ndim == 3:
-            # flatten volumes
-            vectors = np.stack([mu_low, mu_high], axis=-1)  # (N,H,W,2)
-        else:
-            raise ValueError('Expected mu_low to be 3D array')
-        labels = np.zeros_like(adipose, dtype=np.int64)
-        labels[adipose > 0.5] = 0
-        labels[fibro   > 0.5] = 1
-        labels[calc    > 0.5] = 2
+        print('===============================')
+        print('Mu High Shape: ', self.mu_high.shape)
+        print('Mu Low Shape:  ', self.mu_low.shape)
+        print('Atten Vector:  ', self.attn.shape)
+        print('Adipose Shape: ', self.adipose.shape)
+        print('Fibro Shape:   ', self.fibro.shape)
+        print('Calc Shape:    ', self.calc.shape)
+        print('===============================')
 
-        self.labels = labels
-        self.vectors = vectors
+        labels = np.zeros((1000, 3), dtype=int)
+        for i in range(0,self.adipose.shape[0]):
+            has_adipose = np.any(adipose[i])
+            has_fibro   = np.any(fibro[i])
+            has_calc    = np.any(calc[i])
 
-        # Flatten to (num_pixels,)
-        X = vectors.reshape(-1, 2)
-        y = labels.reshape(-1)
-        mask_valid = y >= 0
-        X = X[mask_valid]
-        y = y[mask_valid]
+            # label -> adipose, fibro, calc
+            if has_adipose: labels[i, 0] = 1
+            if has_fibro:   labels[i, 1] = 1
+            if has_calc:    labels[i, 2] = 1
 
-        N = X.shape[0]
-        train_n = int(0.8 * N)
-        mask = np.zeros(N, dtype=bool)
-        mask[:train_n] = True
-        np.random.seed(42)
-        np.random.shuffle(mask)
+        self.classification_labels = labels
+        print('--------------------------')
+        print('Check uniqueness of labels')
+        print('Adipose: ', np.unique(self.adipose))
+        print('Fibro:   ', np.unique(self.fibro))
+        print('Calc:    ', np.unique(self.calc))
+        print('Labels:  ', np.unique(self.classification_labels))
+        print('--------------------------')
+        if normalize:
+            self.attn = self.attn / np.max(self.attn)
 
-        X_train      = X[mask]
-        self.y_train = y[mask]
-        X_test       = X[~mask]
-        self.y_test  = y[~mask]
+        self.labels = np.stack([
+            self.adipose,
+            self.fibro,
+            self.calc
+        ])
+        self.tissue_segment_dataset = TissueSegmentationDataset(self.attn, self.labels)
+        self.dataset = MuDataset(self.attn, self.labels)
 
-        # --- 4. Data scaling (standardization) ---
+        # Define split sizes
+        train_size = int(0.8 * len(self.dataset))  # 800 samples
+        test_size = len(self.dataset) - train_size # 200 samples
+
+        # Split the dataset
+        train_dataset, test_dataset = random_split(self.dataset, [train_size, test_size], generator=torch.Generator().manual_seed(42))
+
+        # Create DataLoaders
+        self.train_ds = train_dataset
+        self.test_ds  = test_dataset
+        '''
         # Compute mean and std on training features
         global_mean = X_train.mean(axis=0)
         global_std  = X_train.std(axis=0) + 1e-6  # avoid zero division
@@ -110,16 +152,6 @@ class MLPTestTrainDataset:
             prototypes.append([mu_low_mean, mu_high_mean])
         self.prototypes = prototypes # torch.tensor(prototypes) #.float().cuda()  # shape (C, 2)
 
-        '''
-        print('============================')
-        print('|          SHAPES          |')
-        print('============================')
-        print('X_train shape:    ', self.X_train.shape)
-        print('y_train shape:    ', self.y_train.shape)
-        print('Prototypes shape: ', np.array(prototypes).shape)
-        print('----------------------------')
-        '''
-
         self.train_ds = TensorDataset(
             torch.from_numpy(self.X_train),
             torch.from_numpy(self.y_train)
@@ -128,12 +160,12 @@ class MLPTestTrainDataset:
             torch.from_numpy(self.X_test),
             torch.from_numpy(self.y_test)
         )
+        '''
 
     def subsample(self, subsample_size: float = 0.01):
         full_size_train = len(self.train_ds)
-        subset_size = int(full_size_train * subsample_size)
-
-        indices = torch.randperm(full_size_train)[:subset_size]
+        subset_size     = int(full_size_train * subsample_size)
+        indices         = torch.randperm(full_size_train)[:subset_size]
         return Subset(self.train_ds, indices)
 
 

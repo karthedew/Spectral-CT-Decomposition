@@ -21,16 +21,13 @@ class MLP(nn.Module):
         )
 
     def forward(self, x):
-        # x: (B,2)
         B = x.size(0)
         C = self.prototypes.size(0)
         p = self.prototypes.to(x.device)  # (C,2)
         x_exp = x.unsqueeze(1).expand(-1, C, -1).reshape(-1, 2)
         p_exp = p.unsqueeze(0).expand(B, -1, -1).reshape(-1, 2)
         sims  = self.cosine(x_exp, p_exp).reshape(B, C)
-#        pearson = torch.corrcoef(x_exp).reshape(B, C)
         x_aug = torch.cat([x, sims], dim=1)
-#        x_aug = torch.cat([x, pearson], dim=1)
         return self.net(x_aug)
 
     def pearson_corr(self, x, y):
@@ -55,6 +52,9 @@ class CosMLPTrainer:
         alpha: float = 1e-2,
         device=None
     ):
+        print('========================')
+        print('Train Dataset Size: ', len(train_dataset))
+        print('========================')
         self.train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
         self.test_loader  = DataLoader(test_dataset,  batch_size=batch_size)
         self.device = device or ('cuda' if torch.cuda.is_available() else 'cpu')
@@ -66,14 +66,15 @@ class CosMLPTrainer:
     def calculate_loss(self, logits, x_batch, prototypes):
         probs = F.softmax(logits, dim=1)
         mu_pred = probs @ prototypes
+        print("Predicted MU: ", mu_pred)
+        print("X Batch:      ", x_batch)
         return F.mse_loss(mu_pred, x_batch)
 
-    def pearson_loss(self, x):
-        return torch.corrcoef(x)
 
     def train_epoch(self):
         self.model.train()
         total_loss = 0.0
+        p = self.model.prototypes.to(self.device).float()
 
         for xb, yb, *_ in self.train_loader:
             xb, yb = xb.to(self.device), yb.to(self.device)
@@ -82,12 +83,8 @@ class CosMLPTrainer:
             ce_loss = self.crit(logits, yb)
 
             # Pysics-informed loss
-            probs     = F.softmax(logits, dim=1)
-            p         = self.model.prototypes.to(self.device).float()
-            mu_pred   = probs @ p
-            phys_loss = F.mse_loss(mu_pred, xb)
-
-            loss = ce_loss + self.alpha * phys_loss
+#            phys_loss = self.calculate_loss(logits, xb, p)
+            loss = ce_loss # + self.alpha * phys_loss
 
             self.opt.zero_grad()
             loss.backward()

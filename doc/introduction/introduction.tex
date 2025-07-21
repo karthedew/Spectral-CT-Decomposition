@@ -1,16 +1,45 @@
 \section{Introduction}\label{sec:introduction}
 
 Spectral Computed Tomography (CT) extends traditional CT by making use of the energy-dependence of
-X-ray attenuation. The conventional CT process produces a single "grayscale" attenuation map which can result in indistinguishable results when comparing similar bulk density materials. Spectral CT records
+X-ray attenuation. The conventional CT process produces a single "grayscale" attenuation map which
+can result in indistinguishable results when comparing similar bulk density materials. Spectral CT records
 two separate x-ray photon energy spectra which allows for recording different attenuation properties
 at different energies. Typically x-ray photons interact with materials through the photoelectric effect,
 which typically occur at low photon energies, and Compton scattering, which typically occur at higher
 photon energies. The dataset provided by the American Association of Physicists in Medicine (AAPM)
 contains the "low-kVp" and "high-kVP" dual energy CT measurements collected at two different tube
-voltages. The low-kVp transmission with the x-ray tube operating at 50 kVp and the high-kVp transmission operating at 80 kVp.
+voltages. The low-kVp transmission with the x-ray tube operating at 50 kVp and the high-kVp transmission 
+operating at 80 kVp.
 
-Extracting reliable photoelectric and Compton maps from noisy or limited‐view data is challenging. Classic algebraic or statistical decomposition methods require careful regularization and often struggle with low photon counts or beam‐hardening artifacts. Deep learning approaches, by contrast, can learn complex nonlinear mappings but may overfit to the training distribution and produce physically inconsistent outputs (e.g., negative attenuation, or tissue maps that fail to reproduce the measured projection data).
+Extracting reliable photoelectric and Compton maps from noisy or limited‐view data is challenging. Classic
+algebraic or statistical decomposition methods require careful regularization and often struggle with low
+photon counts or beam‐hardening artifacts. Deep learning approaches, by contrast, can learn complex nonlinear
+mappings but may overfit to the training distribution and produce physically inconsistent outputs (e.g.,
+negative attenuation, or tissue maps that fail to reproduce the measured projection data).
 
-This work proposes a physics‐informed neural network (PINN) framework for multi‐energy CT tissue classification by first converting paired low- and high-kVp sinograms into per‐pixel attenuation coefficients via the Beer–Lambert law, then applying a closed-form basis decomposition to recover photoelectric and Compton component images. The core model is a lightweight multilayer perceptron that directly classifies each pixel into adipose, fibroglandular, or calcification classes. The training loss is augmented with the standard cross‐entropy loss with a physics consistency term that enforces agreement between the network’s class‐probability–weighted reconstruction and the measured attenuation data. This hybrid loss encourages the network to respect fundamental attenuation physics while retaining the flexibility of data-driven learning.
+This work proposes a basic Convolutional Neural Network (CNN) framework for multi‐energy CT tissue classification
+where the output of the CNN will contain percentages of each tissue type - adipose, fibroglandular, and calcification.
+By using the Beer-Lambert law, low- and high-kVp transmission data are converted into per‐pixel attenuation coefficients
+before applying a closed-form basis decomposition to recover photoelectric and Compton component images. Effectively,
+the low-energy region, 50 kVp, are considered the photoelectric effect interactions while the high-energy region, 80 kVp, 
+are considered Compton scattering. 
 
-This approach is applied on the publicly available AAPM DL-Spectral CT Challenge dataset, performing comprehensive EDA, sinogram-domain preprocessing, and network training entirely in PyTorch, with future future work that could integrate ASTRA‐based differentiable forward projections. Results show improved material separation and robustness compared to purely data-driven classifiers, highlighting the potential of PINNs for reliable, quantitative spectral CT tissue mapping.
+These images are stacked and used with two core models with specific hyperparameter tuning to determine the model and
+parameters which demonstrate the lowest Binary Cross Entropy (BCE) loss. The first model contains 11 convolutional layers 
+structured in an encoder-decoder architecture. It downsamples the input images from 512×512 to a bottleneck of 128×128 
+pixels, capturing mid-level semantic features before reconstructing the output at the original resolution. It's designed 
+for moderately complex tasks with a balance between model depth and computational cost. The second model includes 15 
+convolutional layers, adding an extra downsampling stage that allows the network to capture more abstract and global 
+features. It also downsamples to a 128×128 latent space, despite having more layers, making it suitable for learning 
+finer distinctions in more complex images or tasks.
+
+The model is trained using the binary cross-entropy loss between the predicted tissue probability maps and the ground-truth i
+phantom tissue labels. This loss directly penalizes voxel-wise deviations from the true tissue distribution.
+
+During evaluation, the model’s output is also used to compute the mean tissue composition percentages across the image volume. 
+These predicted percentages are compared to the true phantom percentages using an average absolute error metric, which provides 
+an interpretable assessment of how well the model recovers the tissue mix — but this is not used for training.
+
+This approach is applied on the publicly available AAPM DL-Spectral CT Challenge dataset, performing comprehensive
+EDA, sinogram-domain preprocessing, and network training entirely in PyTorch, with an explaination of future work that could
+integrate ASTRA‐based differentiable forward projections.
