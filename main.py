@@ -1,3 +1,59 @@
+'''
+=== Best Hyperparameters ===
+Model: UNET256
+Params: {'batch_size': 4, 'epochs': 5, 'filter_size': 5, 'learning_rate': 0.001, 'padding': 1, 'stride': 3}
+Val Loss: 0.0519
+
+Model: UNET512
+Params: {'batch_size': 4, 'epochs': 5, 'filter_size': 4, 'learning_rate': 0.001, 'padding': 2, 'stride': 3}
+Val Loss: 0.0380
+
+=== Final Training ===
+time uv run python3 main.py --verbose train --model UNET512 --epochs 5 --filter-size 4 --lr 0.001 --stride 3 --padding 2
+
+[Epoch 01] Train Loss: 0.2254
+           Val Loss:   0.0456
+Mean Absolute Error:  [0.00419942 0.00259909 0.00022896]
+Tissue composition for a single image:
+  Predicted:     Adipose: 39.35%, Fibro: 22.46%, Calc: 0.06%
+  Ground Truth:  Adipose: 39.67%, Fibro: 22.35%, Calc: 0.04%
+---------------------
+[Epoch 02] Train Loss: 0.0478
+           Val Loss:   0.0366
+Mean Absolute Error:  [4.6931258e-03 4.6866811e-03 9.8491204e-05]
+Tissue composition for a single image:
+  Predicted:     Adipose: 40.12%, Fibro: 21.89%, Calc: 0.03%
+  Ground Truth:  Adipose: 39.67%, Fibro: 22.35%, Calc: 0.04%
+---------------------
+[Epoch 03] Train Loss: 0.0365
+           Val Loss:   0.0331
+Mean Absolute Error:  [1.6103401e-03 1.7545491e-03 4.7579295e-05]
+Tissue composition for a single image:
+  Predicted:     Adipose: 39.51%, Fibro: 22.52%, Calc: 0.05%
+  Ground Truth:  Adipose: 39.67%, Fibro: 22.35%, Calc: 0.04%
+---------------------
+[Epoch 04] Train Loss: 0.0324
+           Val Loss:   0.0310
+Mean Absolute Error:  [2.1582521e-03 2.5966563e-03 4.1078700e-05]
+Tissue composition for a single image:
+  Predicted:     Adipose: 39.83%, Fibro: 22.14%, Calc: 0.05%
+  Ground Truth:  Adipose: 39.67%, Fibro: 22.35%, Calc: 0.04%
+---------------------
+[Epoch 05] Train Loss: 0.0304
+           Val Loss:   0.0292
+Mean Absolute Error:  [2.6003474e-03 2.7826561e-03 3.4554600e-05]
+Tissue composition for a single image:
+  Predicted:     Adipose: 39.42%, Fibro: 22.61%, Calc: 0.04%
+  Ground Truth:  Adipose: 39.67%, Fibro: 22.35%, Calc: 0.04%
+---------------------
+
+real	9m32.029s
+user	9m38.294s
+sys	0m20.950s
+
+'''
+
+
 import sys
 import argparse
 import torch.nn as nn
@@ -101,7 +157,8 @@ def main():
                 lr=args.lr,
                 loss_fn=None,
                 device=None,
-                num_workers=4
+                num_workers=4,
+                verbose=args.verbose
             )
         elif args.model == 'UNET512':
             model = UNet512(in_channels=2, out_channels=3)
@@ -113,7 +170,8 @@ def main():
                 lr=args.lr,
                 loss_fn=None,
                 device=None,
-                num_workers=4
+                num_workers=4,
+                verbose=args.verbose
             )
 
         else:
@@ -129,6 +187,7 @@ def main():
 def do_options_parsing(parser):
 
     parser.add_argument('--datadir', type=str, default='./data', help='Path to data directory.')
+    parser.add_argument('--verbose', action='store_true', help='Increase output verbosity.')
 
     subparsers = parser.add_subparsers(dest='mode', required=True)
 

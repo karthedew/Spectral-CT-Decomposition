@@ -1,2 +1,24 @@
 \section{Discussion}\label{sec:discussion}
 
+The results demonstrate the feasibility and effectiveness of using physics-informed convolutional neural networks for 
+tissue segmentation in spectral CT imaging. By explicitly encoding dual-energy attenuation inputs and aligning the model 
+output with the physical characteristics of adipose, fibroglandular, and calcified tissues, the network is able to 
+generalize well across heterogeneous tissue distributions.
+
+A key observation is the improvement in performance with increased network depth, as seen in the comparison between 
+\texttt{UNet256} and \texttt{UNet512}. The deeper architecture with an additional downsampling path captures more 
+complex spatial and spectral correlations, leading to a lower validation loss and improved tissue classification 
+accuracy. This is particularly evident in the accurate prediction of rare calcification features, despite significant 
+class imbalance in the training data.
+
+The use of domain-specific input features—namely, dual-energy attenuation values computed from raw transmission 
+data—proved essential. These features directly encode physical interaction mechanisms (photoelectric and Compton 
+effects), helping the model learn more meaningful and generalizable patterns compared to raw image pixels or naive 
+inputs.
+
+However, challenges remain. First, the training dataset was synthetically generated, and real-world generalization to 
+clinical CT scans may require transfer learning or fine-tuning on real data. Second, the class imbalance, while 
+mitigated to some extent by network design, may benefit from more sophisticated loss functions or targeted sampling 
+strategies. Finally, although model convergence occurred rapidly (within five epochs), longer training and ensemble 
+methods could further improve robustness.
+

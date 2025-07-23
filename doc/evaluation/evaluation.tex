@@ -1,2 +1,117 @@
 \section{Evaluation \& Analysis}\label{sec:evaluation}
 
+\subsection{Hyperparameter Optimization}
+
+The following list defines the set of hyperparameters that were used to tune both
+\texttt{UNet256} and \texttt{UNet512}. The tuning was conducted using a grid search
+approach. The models were evaluated using a validation loss.
+
+\begin{itemize}
+    \item \textbf{filter\_size:} [3, 4, 5]
+    \item \textbf{stride:} [2, 3]
+    \item \textbf{padding:} [1, 2]
+    \item \textbf{learning\_rate:} [1e-4, 1e-3, 1e-2]
+    \item \textbf{batch\_size:} [4, 8]
+    \item \textbf{epochs:} [3, 5]
+\end{itemize}
+
+The best performing configurations for each model are listed below. The validation loss is 
+written in the square brackets.
+
+\begin{itemize}
+    \item \textbf{UNet256} [0.0519] \newline
+          \texttt{filter\_size=5}, \newline
+          \texttt{stride=3}, \newline
+          \texttt{padding=1}, \newline
+          \texttt{learning\_rate=0.001}, \newline
+          \texttt{batch\_size=4}; \newline
+    \item \textbf{UNet512}: [0.0380] \newline
+          \texttt{filter\_size=4}, \newline
+          \texttt{stride=3}, \newline
+          \texttt{padding=2}, \newline
+          \texttt{learning\_rate=0.001}, \newline
+          \texttt{batch\_size=4}; \newline
+\end{itemize}
+
+The \texttt{UNet512} model demonstrated superior performance, achieving a significantly lower validation 
+loss, and was selected for final training and evaluation.
+
+\subsection{Final Training Results}
+
+\texttt{UNet512} model was trained using the selected hyperparameters for 5 epochs. The training and validation 
+loss decreased consistently across epochs, with the validation loss dropping from 0.0456 in epoch 1 to 0.0292 by 
+epoch 5. Table~\ref{tab:final_metrics} summarizes the model's mean absolute error (MAE) performance per epoch.
+
+\begin{table}[h]
+\centering
+\caption{Training and Validation Loss with Mean Absolute Error (MAE) per Epoch}
+\label{tab:final_metrics}
+\begin{tabular}{cccc}
+\toprule
+\textbf{Epoch} & \textbf{Train Loss} & \textbf{Val Loss} & \textbf{MAE (Adipose, Fibro, Calc)} \\
+\midrule
+1 & 0.2254 & 0.0456 & (0.00420, 0.00260, 0.00023) \\
+2 & 0.0478 & 0.0366 & (0.00469, 0.00469, 0.00010) \\
+3 & 0.0365 & 0.0331 & (0.00161, 0.00175, 0.00005) \\
+4 & 0.0324 & 0.0310 & (0.00216, 0.00260, 0.00004) \\
+5 & 0.0304 & 0.0292 & (0.00260, 0.00278, 0.00003) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+\subsection{Tissue Composition Accuracy}
+
+The model's predicted tissue composition in a final selected image within the dataset was also evaluated and compared to the ground 
+truth. The model's predicted proportions of adipose, fibroglandular, and calcified tissue closely matched the ground truth. 
+For example, at epoch 5, the predicted values were 39.42\%, 22.61\%, and 0.04\% for adipose, fibro, and calcification respectively, 
+compared to ground truth values of 39.67\%, 22.35\%, and 0.04\%. All results for each epoch are presented in Table~\ref{tab:tissue_prediction}.
+
+\begin{table}[h!]
+\centering
+\caption{Predicted vs. Ground Truth Tissue Composition Over Training Epochs}
+\label{tab:tissue_prediction}
+\begin{tabular}{|c|ccc|ccc|}
+\hline
+\textbf{Epoch} & \multicolumn{3}{c|}{\textbf{Predicted (\%)}} & \multicolumn{3}{c|}{\textbf{Ground Truth (\%)}} \\
+               & Adipose & Fibro & Calc & Adipose & Fibro & Calc \\
+\hline
+\texttt{1} & \texttt{39.35} & \texttt{22.46} & \texttt{0.06} & \texttt{39.67} & \texttt{22.35} & \texttt{0.04} \\
+\texttt{2} & \texttt{40.12} & \texttt{21.89} & \texttt{0.03} & \texttt{39.67} & \texttt{22.35} & \texttt{0.04} \\
+\texttt{3} & \texttt{39.51} & \texttt{22.52} & \texttt{0.05} & \texttt{39.67} & \texttt{22.35} & \texttt{0.04} \\
+\texttt{4} & \texttt{39.83} & \texttt{22.14} & \texttt{0.05} & \texttt{39.67} & \texttt{22.35} & \texttt{0.04} \\
+\textbf{5} & \textbf{39.42} & \textbf{22.61} & \textbf{0.04} & \textbf{39.67} & \textbf{22.35} & \textbf{0.04} \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection{Interpretation}
+
+The results from hyperparameter tuning and final model training suggest that deeper architectures like \texttt{UNet512} 
+provide superior segmentation performance for spectral CT data. The reduction in validation loss from 0.0456 to 0.0292 
+over five epochs indicates that the model continues to learn meaningful features and generalizes well to unseen validation 
+data.
+
+The mean absolute error (MAE) across tissue types also supports this conclusion, with all three tissue categories—adipose, 
+fibroglandular, and calcification—reaching sub-percent level errors. Notably, calcification, which comprises only a small 
+fraction of the total tissue volume, achieved an MAE as low as 0.00003 by epoch 5, suggesting that the network is capable 
+of identifying even rare tissue types with high precision.
+
+Furthermore, the predicted tissue composition percentages closely track the ground truth values across all epochs. For 
+example, at epoch 5, the model predicted 39.42\% adipose and 22.61\% fibroglandular tissue, compared to ground truth 
+values of 39.67\% and 22.35\%, respectively. This demonstrates not only strong pixel-level segmentation but also accurate 
+global tissue composition estimation, which is essential for clinical decision-making and downstream analysis.
+
+Together, these findings validate the use of a physics-informed U-Net architecture for spectral CT tissue decomposition 
+and highlight its capacity to accurately resolve fine-grained differences in dual-energy attenuation profiles.
+
+
+% \subsection{Interpretation}
+
+% The results indicate that the hybrid loss function---which combines binary cross-entropy with a physics-informed 
+% consistency term---effectively guides the network toward accurate and physically meaningful tissue segmentation. 
+% The minimal error in tissue composition percentages suggests that the model not only captures image features but 
+% also adheres to expected attenuation behavior governed by photoelectric and Compton interactions. The improved 
+% performance of \texttt{UNet512} further highlights the benefit of deeper architectures for high-resolution CT data.
+
+

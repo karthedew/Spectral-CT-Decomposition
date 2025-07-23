@@ -1,6 +1,6 @@
 \section{Introduction}\label{sec:introduction}
 
-Spectral Computed Tomography (CT) extends traditional CT by making use of the energy-dependence of
+Spectral Computed Tomography (Spectral CT) extends traditional CT by making use of the energy-dependence of
 X-ray attenuation. The conventional CT process produces a single "grayscale" attenuation map which
 can result in indistinguishable results when comparing similar bulk density materials. Spectral CT records
 two separate x-ray photon energy spectra which allows for recording different attenuation properties
@@ -40,6 +40,6 @@ During evaluation, the model’s output is also used to compute the mean tissue 
 These predicted percentages are compared to the true phantom percentages using an average absolute error metric, which provides 
 an interpretable assessment of how well the model recovers the tissue mix — but this is not used for training.
 
-This approach is applied on the publicly available AAPM DL-Spectral CT Challenge dataset, performing comprehensive
+This approach is applied on the publicly available AAPM DL-Spectral CT Challenge dataset \cite{AAPM2024SpectralCT},  performing comprehensive
 EDA, sinogram-domain preprocessing, and network training entirely in PyTorch, with an explaination of future work that could
 integrate ASTRA‐based differentiable forward projections.

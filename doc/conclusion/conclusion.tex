@@ -1,2 +1,14 @@
 \section{Conclusion}\label{sec:conclusion}
 
+This work introduces a physics-informed deep learning framework for spectral CT tissue decomposition, leveraging U-Net 
+architectures to segment and quantify adipose, fibroglandular, and calcified tissues from dual-energy attenuation inputs. 
+Through a careful integration of the Beer–Lambert law, domain-specific feature construction, and deep convolutional 
+networks, the method achieves high segmentation fidelity across tissue types, including rare calcification patterns.
+
+Quantitative evaluation shows that the deeper \texttt{UNet512} model achieves the best performance, with a final validation 
+loss of 0.0292 and mean absolute error below 0.003 for all tissue categories. Predicted tissue compositions closely match 
+ground truth distributions, highlighting the model`s clinical relevance.
+
+Overall, this study demonstrates that coupling physics-based domain knowledge with deep learning architectures offers a 
+powerful and interpretable approach to spectral CT analysis. Future work will extend this model to real-world datasets, 
+investigate 3D volumetric extensions, and incorporate uncertainty estimation to further enhance clinical utility.
