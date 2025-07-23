@@ -1,6 +1,16 @@
 \begin{abstract}
 
-This project is for CT scanning.
+Spectral computed tomography (CT) enables material-specific imaging by exploiting energy-dependent x-ray attenuation. 
+However, accurate tissue decomposition—especially of low-prevalence classes like calcifications—remains challenging 
+due to class imbalance, noise sensitivity, and limited ground truth data. This study introduces a physics-informed 
+deep learning framework for tissue segmentation in dual-energy spectral CT. By leveraging the Beer–Lambert attenuation 
+law and incorporating dual-energy attenuation maps \([\mu_{\text{low}}, \mu_{\text{high}}]\) as inputs, we train 
+U-Net-based convolutional neural networks (CNNs) to segment adipose, fibroglandular, and calcified tissue. Two 
+architectures, \texttt{UNet256} and \texttt{UNet512}, are evaluated, with the deeper \texttt{UNet512} model achieving 
+superior performance (validation loss = 0.0292). Quantitative analysis shows close agreement between predicted and 
+true tissue compositions, including for rare calcifications. This work demonstrates that embedding first-principles 
+physics into CNN design enhances interpretability and segmentation accuracy, offering a reliable approach for tissue 
+decomposition in spectral CT.
 
 \vskip 2mm
 
