@@ -1,5 +1,15 @@
-data
 __pycache__
 *.aux
 *.out
 *.log
+*.bbl
+*.blg
+*.fdb_latexmk
+*.synctex.gz
+*.fls
+data/14262737.zip
+data/starting_kit.tgz
+data/lowkVpImages.npy.gz
+data/highkVpImages.npy.gz
+data/attn_images*
+data
