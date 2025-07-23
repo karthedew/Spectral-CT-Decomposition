@@ -84,7 +84,7 @@ def run_eda(args, dataset):
     plt.ylabel('Number of Images')
     plt.title('Calcification Tissue Distribution')
     plt.tight_layout()
-    plt.savefig('fig/calcification_distribution.png', dpi=150)
+    plt.savefig('doc/fig/calcification_distribution.png', dpi=150)
     plt.close()
 
     print("EDA figures saved to doc/fig/")

@@ -1,6 +1,6 @@
 \section{Discussion}\label{sec:discussion}
 
-The results demonstrate the feasibility and effectiveness of using physics-informed convolutional neural networks for 
+The results demonstrate the feasibility and effectiveness of using UNet convolutional neural networks for 
 tissue segmentation in spectral CT imaging. By explicitly encoding dual-energy attenuation inputs and aligning the model 
 output with the physical characteristics of adipose, fibroglandular, and calcified tissues, the network is able to 
 generalize well across heterogeneous tissue distributions.
@@ -16,9 +16,9 @@ data—proved essential. These features directly encode physical interaction mec
 effects), helping the model learn more meaningful and generalizable patterns compared to raw image pixels or naive 
 inputs.
 
-However, challenges remain. First, the training dataset was synthetically generated, and real-world generalization to 
-clinical CT scans may require transfer learning or fine-tuning on real data. Second, the class imbalance, while 
-mitigated to some extent by network design, may benefit from more sophisticated loss functions or targeted sampling 
-strategies. Finally, although model convergence occurred rapidly (within five epochs), longer training and ensemble 
-methods could further improve robustness.
+There are several considerations that should be considered in future work. Firstly, the training dataset was synthetically 
+generated, and real-world generalization to clinical CT scans may require transfer learning or fine-tuning on real data. 
+Secondly, the class imbalance, while mitigated to some extent by network design, may benefit from more sophisticated loss 
+functions or targeted sampling strategies. Finally, although model convergence occurred rapidly (within five epochs), longer 
+training and ensemble methods could further improve robustness.
 

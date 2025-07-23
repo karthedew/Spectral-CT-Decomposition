@@ -78,7 +78,7 @@ These trends confirm the feasibility of decomposing tissue types based on their 
 
 \begin{figure}[h!]
     \centering
-    \includegraphics[width=0.5\textwidth]{../fig/attenuation_scatter.png}
+    \includegraphics[width=0.5\textwidth]{./fig/attenuation_scatter.png}
     \caption{Dual-energy attenuation scatter plot colored by tissue class.}
     \label{fig:scatter}
 \end{figure}
@@ -97,7 +97,7 @@ These histograms highlight the importance of utilizing both energy channels in m
 
 \begin{figure}[h!]
     \centering
-    \includegraphics[width=\linewidth]{../fig/attenuation_histograms.png}
+    \includegraphics[width=\linewidth]{./fig/attenuation_histograms.png}
     \caption{Histogram of attenuation values by tissue type for low and high energy channels.}
     \label{fig:histograms}
 \end{figure}
@@ -113,9 +113,11 @@ The aggregate distributions for adipose, fibroglandular, and calcification tissu
           on the same scale as the other tissue types. The calcification should be around 0-0.5\% range.
 \end{itemize}
 
-As such, a dedicated plot of calcification composition is included in (Figure~\ref{fig:calcification}), which highlights the low prevalence and narrow distribution range of this tissue class.
+As such, a dedicated plot of calcification composition is included in (Figure~\ref{fig:calcification}), which highlights the low prevalence and narrow 
+distribution range of this tissue class.
 
-This analysis provides important context for understanding class imbalance, which can impact model calibration and loss sensitivity—especially for underrepresented classes like calcifications.
+This analysis provides important context for understanding class imbalance, which can impact model calibration and loss sensitivity—especially for 
+underrepresented classes like calcifications.
 
 \begin{itemize}
     \item \textbf{Adipose} and \textbf{fibroglandular} tissues are well represented, with Gaussian-like distributions centered around 40\% and 20\%, respectively.
@@ -126,14 +128,14 @@ This analysis provides important context for class imbalance and model calibrati
 
 \begin{figure}[h!]
     \centering
-    \includegraphics[width=\linewidth]{../fig/tissue_percentage_distribution.png}
+    \includegraphics[width=\linewidth]{./fig/tissue_percentage_distribution.png}
     \caption{Distribution of tissue percentages across training images.}
     \label{fig:composition}
 \end{figure}
 
 \begin{figure}[h!]
     \centering
-    \includegraphics[width=\linewidth]{../fig/calcification_distribution.png}
+    \includegraphics[width=\linewidth]{./fig/calcification_distribution.png}
     \caption{Distribution of calcification percentages across training images. Note the narrow range due to the rare occurrence of calcifications.}
     \label{fig:calcification}
 \end{figure}

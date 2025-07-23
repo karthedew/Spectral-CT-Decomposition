@@ -64,7 +64,7 @@ epoch 5. Table~\ref{tab:final_metrics} summarizes the model's mean absolute erro
 
 The model's predicted tissue composition in a final selected image within the dataset was also evaluated and compared to the ground 
 truth. The model's predicted proportions of adipose, fibroglandular, and calcified tissue closely matched the ground truth. 
-For example, at epoch 5, the predicted values were 39.42\%, 22.61\%, and 0.04\% for adipose, fibro, and calcification respectively, 
+For example, at epoch 5, the predicted values were 39.42\%, 22.61\%, and 0.04\% for adipose, fibro, and calcification respectively,
 compared to ground truth values of 39.67\%, 22.35\%, and 0.04\%. All results for each epoch are presented in Table~\ref{tab:tissue_prediction}.
 
 \begin{table}[h!]
@@ -102,16 +102,5 @@ example, at epoch 5, the model predicted 39.42\% adipose and 22.61\% fibroglandu
 values of 39.67\% and 22.35\%, respectively. This demonstrates not only strong pixel-level segmentation but also accurate 
 global tissue composition estimation, which is essential for clinical decision-making and downstream analysis.
 
-Together, these findings validate the use of a physics-informed U-Net architecture for spectral CT tissue decomposition 
+Together, these findings validate the use of a U-Net architecture for spectral CT tissue decomposition 
 and highlight its capacity to accurately resolve fine-grained differences in dual-energy attenuation profiles.
-
-
-% \subsection{Interpretation}
-
-% The results indicate that the hybrid loss function---which combines binary cross-entropy with a physics-informed 
-% consistency term---effectively guides the network toward accurate and physically meaningful tissue segmentation. 
-% The minimal error in tissue composition percentages suggests that the model not only captures image features but 
-% also adheres to expected attenuation behavior governed by photoelectric and Compton interactions. The improved 
-% performance of \texttt{UNet512} further highlights the benefit of deeper architectures for high-resolution CT data.
-
-
