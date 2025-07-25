@@ -6,6 +6,7 @@ __pycache__
 *.blg
 *.fdb_latexmk
 *.synctex.gz
+.~lock*
 *.fls
 data/14262737.zip
 data/starting_kit.tgz
