@@ -18,18 +18,6 @@ The [project dataset](https://zenodo.org/records/14262737) is a set of Spectral 
 
 ```bash
 .
-├── data
-│   ├── 14262737.zip
-│   ├── attn_images.npy
-│   ├── attn_images.npy.gz
-│   ├── highkVpImages.npy.gz
-│   ├── highkVpTransmission.npy.gz
-│   ├── lowkVpImages.npy.gz
-│   ├── lowkVpTransmission.npy.gz
-│   ├── Phantom_Adipose.npy.gz
-│   ├── Phantom_Calcification.npy.gz
-│   ├── Phantom_Fibroglandular.npy.gz
-│   └── starting_kit.tgz
 ├── doc
 │   ├── abstract
 │   │   └── abstract.tex
@@ -84,32 +72,9 @@ The [project dataset](https://zenodo.org/records/14262737) is a set of Spectral 
 │   ├── ImageDataset.py
 │   ├── __init__.py
 │   ├── MLP.py
-│   ├── __pycache__
-│   │   ├── AttnDataset.cpython-311.pyc
-│   │   ├── AttnDataset.cpython-312.pyc
-│   │   ├── CNN.cpython-311.pyc
-│   │   ├── CNN.cpython-312.pyc
-│   │   ├── CosMLP.cpython-311.pyc
-│   │   ├── CosMLP.cpython-312.pyc
-│   │   ├── Dataset.cpython-311.pyc
-│   │   ├── Dataset.cpython-312.pyc
-│   │   ├── EDA.cpython-311.pyc
-│   │   ├── EDA.cpython-312.pyc
-│   │   ├── fanbeam_fbp_sino.cpython-311.pyc
-│   │   ├── fanbeam_fbp_sino.cpython-312.pyc
-│   │   ├── ImageDataset.cpython-312.pyc
-│   │   ├── __init__.cpython-311.pyc
-│   │   ├── __init__.cpython-312.pyc
-│   │   ├── MLP.cpython-311.pyc
-│   │   ├── MLP.cpython-312.pyc
-│   │   ├── PINN.cpython-312.pyc
-│   │   ├── Trainer.cpython-311.pyc
-│   │   └── Trainer.cpython-312.pyc
 │   ├── Trainer.py
 │   └── tuning.py
 └── uv.lock
-
-14 directories, 77 files
 ```
 
 ## Methodology
