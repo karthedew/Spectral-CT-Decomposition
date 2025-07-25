@@ -1,7 +1,7 @@
 # CU Boulder CSCA 5642 Deep Learning Final Project
 
 This repository contains code and assets for performing tissue decomposition in dual-energy spectral computed tomography (CT) 
-using deep learning. The project explores physics-informed convolutional neural networks (CNNs) to accurately segment and classify 
+using deep learning. The project explores U-Net convolutional neural networks (CNNs) to accurately segment and classify 
 adipose, fibroglandular, and calcified tissues from simulated spectral CT data.
 
 ## Overview
