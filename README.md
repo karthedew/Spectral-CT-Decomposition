@@ -48,14 +48,7 @@ The [project dataset](https://zenodo.org/records/14262737) is a set of Spectral 
 │   ├── references.bib
 │   ├── related_work
 │   │   └── related_work.tex
-│   ├── Spectral_CT_Decomposition.aux
-│   ├── Spectral_CT_Decomposition.bbl
-│   ├── Spectral_CT_Decomposition.fdb_latexmk
-│   ├── Spectral_CT_Decomposition.fls
-│   ├── Spectral_CT_Decomposition.log
-│   ├── Spectral_CT_Decomposition.out
 │   ├── Spectral_CT_Decomposition.pdf
-│   ├── Spectral_CT_Decomposition.synctex.gz
 │   └── Spectral_CT_Decomposition.tex
 ├── __init__.py
 ├── main.py
