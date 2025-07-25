@@ -16,6 +16,7 @@ The [project dataset](https://zenodo.org/records/14262737) is a set of Spectral 
 
 ## Project Structure
 
+```bash
 .
 ├── data
 │   ├── 14262737.zip
@@ -109,6 +110,7 @@ The [project dataset](https://zenodo.org/records/14262737) is a set of Spectral 
 └── uv.lock
 
 14 directories, 77 files
+```
 
 ## Methodology
 
